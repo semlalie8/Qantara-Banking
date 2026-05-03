@@ -1,0 +1,22 @@
+import '../styles/globals.css';
+import { AuthProvider } from '../context/auth.context';
+
+export const metadata = {
+  title: 'MOUJ — Full-Stack Fintech Platform',
+  description: 'AI-powered financial services in Morocco and beyond.',
+};
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.png" />
+      </head>
+      <body>
+        <AuthProvider>
+          {children}
+        </AuthProvider>
+      </body>
+    </html>
+  );
+}

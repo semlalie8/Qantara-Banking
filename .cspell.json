@@ -1,0 +1,29 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "MOUJ",
+    "FINTEGRA",
+    "qwen",
+    "deepseek",
+    "Unbanked",
+    "Insurtech",
+    "WealthTech",
+    "RegTech",
+    "Mudaraba",
+    "Moroccan",
+    "Prisma",
+    "lucide",
+    "bcryptjs",
+    "morgan",
+    "formspree",
+    "ollama",
+    "glassmorphism",
+    "MARJANE"
+  ],
+  "ignorePaths": [
+    "node_modules",
+    ".next",
+    "dist"
+  ]
+}
