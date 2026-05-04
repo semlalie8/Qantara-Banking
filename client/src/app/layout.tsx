@@ -1,3 +1,4 @@
+import React, { ReactNode } from 'react';
 import '../styles/globals.css';
 import { AuthProvider } from '@/context/auth.context';
 
@@ -6,7 +7,7 @@ export const metadata = {
   description: 'AI-powered financial services in Morocco and beyond.',
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>

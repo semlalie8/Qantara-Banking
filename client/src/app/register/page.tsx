@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import React, { useState, FormEvent, ChangeEvent } from 'react';
 import { useAuth } from '@/context/auth.context';
 import Link from 'next/link';
 
@@ -13,16 +13,16 @@ export default function RegisterPage() {
   const [error, setError] = useState('');
   const { register } = useAuth();
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
     try {
       await register(formData);
-    } catch (err) {
+    } catch (err: any) {
       setError(err.response?.data?.message || 'Failed to register');
     }
   };

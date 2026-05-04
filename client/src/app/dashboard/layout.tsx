@@ -1,7 +1,7 @@
 'use client';
+import React, { ReactNode, useEffect } from 'react';
 import { useAuth } from '@/context/auth.context';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import Link from 'next/link';
 import Logo from '../../components/Logo';
 import { 
@@ -13,10 +13,17 @@ import {
   BarChart3, 
   Settings, 
   LogOut,
-  User
+  User,
+  LucideIcon
 } from 'lucide-react';
 
-const navItems = [
+interface NavItem {
+  name: string;
+  icon: LucideIcon;
+  href: string;
+}
+
+const navItems: NavItem[] = [
   { name: 'Overview', icon: LayoutDashboard, href: '/dashboard' },
   { name: 'Payments', icon: CreditCard, href: '/dashboard/payments' },
   { name: 'Lending', icon: HandCoins, href: '/dashboard/lending' },
@@ -26,7 +33,7 @@ const navItems = [
   { name: 'Settings', icon: Settings, href: '/dashboard/settings' },
 ];
 
-export default function DashboardLayout({ children }) {
+export default function DashboardLayout({ children }: { children: ReactNode }) {
   const { user, loading, logout } = useAuth();
   const router = useRouter();
 
@@ -34,7 +41,7 @@ export default function DashboardLayout({ children }) {
     if (!loading && !user) {
       router.push('/login');
     }
-  }, [user, loading]);
+  }, [user, loading, router]);
 
   if (loading || !user) return <div style={{ background: 'var(--bg-primary)', height: '100vh' }}></div>;
 

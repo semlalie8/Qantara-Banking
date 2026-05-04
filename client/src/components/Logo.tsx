@@ -1,8 +1,14 @@
 'use client';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import React from 'react';
 
-export default function Logo({ size = 32, className = '' }) {
+interface LogoProps {
+  size?: number;
+  className?: string;
+}
+
+export default function Logo({ size = 32, className = '' }: LogoProps) {
   return (
     <Link href="/" className={`logo-container ${className}`} style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
       <motion.div

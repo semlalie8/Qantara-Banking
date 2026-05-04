@@ -1,4 +1,5 @@
 'use client';
+import React from 'react';
 import { useAuth } from '@/context/auth.context';
 import { 
   TrendingUp, 
@@ -6,13 +7,22 @@ import {
   Wallet, 
   ArrowUpRight, 
   ArrowDownLeft,
-  Clock
+  Clock,
+  LucideIcon
 } from 'lucide-react';
+
+interface Stat {
+  name: string;
+  value: string;
+  icon: LucideIcon;
+  change: string;
+  trend: 'up' | 'down' | 'neutral';
+}
 
 export default function DashboardPage() {
   const { user } = useAuth();
 
-  const stats = [
+  const stats: Stat[] = [
     { name: 'Total Balance', value: '45,230.00 MAD', icon: Wallet, change: '+2.4%', trend: 'up' },
     { name: 'Monthly Income', value: '12,500.00 MAD', icon: ArrowUpRight, change: '+12%', trend: 'up' },
     { name: 'Monthly Expenses', value: '8,420.00 MAD', icon: ArrowDownLeft, change: '-4%', trend: 'down' },

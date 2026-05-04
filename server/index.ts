@@ -1,9 +1,11 @@
-const express = require('express');
-const cors = require('cors');
-const helmet = require('helmet');
-const morgan = require('morgan');
-const cookieParser = require('cookie-parser');
-const dotenv = require('dotenv');
+import express, { Request, Response, NextFunction } from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv';
+import authRoutes from './routes/auth.routes';
+import aiRoutes from './routes/ai.routes';
 
 dotenv.config();
 
@@ -21,16 +23,15 @@ app.use(cors({
 }));
 
 // Routes
-app.use('/api/auth', require('./routes/auth.routes'));
-app.use('/api/ai', require('./routes/ai.routes'));
-// app.use('/api/accounts', require('./routes/account.routes'));
+app.use('/api/auth', authRoutes);
+app.use('/api/ai', aiRoutes);
 
-app.get('/health', (req, res) => {
+app.get('/health', (req: Request, res: Response) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
 // Error handling
-app.use((err, req, res, next) => {
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
   res.status(500).json({
     message: 'Internal Server Error',

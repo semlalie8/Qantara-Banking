@@ -1,24 +1,37 @@
 'use client';
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, FormEvent } from 'react';
 import { useAuth } from '@/context/auth.context';
-import { Send, Bot, User, Sparkles, Brain, ShieldCheck, Zap } from 'lucide-react';
+import { Send, Bot, User, Sparkles, Brain, ShieldCheck, Zap, LucideIcon } from 'lucide-react';
 
-const models = [
+interface Model {
+  id: string;
+  name: string;
+  icon: LucideIcon;
+  color: string;
+}
+
+const models: Model[] = [
   { id: 'qwen3.5:cloud', name: 'Primary Advisor', icon: Sparkles, color: 'var(--accent-blue)' },
   { id: 'deepseek-r1:8b', name: 'Reasoning Engine', icon: Brain, color: 'var(--accent-teal)' },
   { id: 'gemma4:E4B', name: 'Fraud Watch', icon: ShieldCheck, color: '#ef4444' },
   { id: 'gemma4:E2B', name: 'Quick Helper', icon: Zap, color: 'var(--accent-cyan)' },
 ];
 
+interface Message {
+  role: 'user' | 'assistant';
+  content: string;
+  model?: string;
+}
+
 export default function AIAdvisorPage() {
   const { user } = useAuth();
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<Message[]>([
     { role: 'assistant', content: `Hello ${user?.firstName}! I'm your Qantara AI assistant. How can I help you with your finances today?`, model: 'qwen3.5:cloud' }
   ]);
   const [input, setInput] = useState('');
-  const [selectedModel, setSelectedModel] = useState(models[0]);
+  const [selectedModel, setSelectedModel] = useState<Model>(models[0]);
   const [isTyping, setIsTyping] = useState(false);
-  const messagesEndRef = useRef(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -26,20 +39,19 @@ export default function AIAdvisorPage() {
 
   useEffect(scrollToBottom, [messages, isTyping]);
 
-  const handleSend = async (e) => {
+  const handleSend = async (e: FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isTyping) return;
 
-    const userMessage = { role: 'user', content: input };
+    const userMessage: Message = { role: 'user', content: input };
     setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsTyping(true);
 
     try {
       // In a real app, this would call our backend API
-      // For now, we'll simulate the AI response
       setTimeout(() => {
-        const aiResponse = { 
+        const aiResponse: Message = { 
           role: 'assistant', 
           content: `I'm analyzing your request using the ${selectedModel.name} model. Based on your current balance of 45,230 MAD, I recommend optimizing your monthly savings by diversifying into local equity markets.`,
           model: selectedModel.id

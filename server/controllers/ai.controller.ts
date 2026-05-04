@@ -1,9 +1,12 @@
-const AIService = require('../services/ai.service');
-const prisma = require('../utils/prisma');
+import { Response } from 'express';
+import AIService from '../services/ai.service';
+import prisma from '../utils/prisma';
+import { AuthRequest } from '../middleware/auth';
 
-const chat = async (req, res) => {
+export const chat = async (req: AuthRequest, res: Response) => {
   try {
     const { message, model } = req.body;
+    if (!req.user) return res.status(401).json({ message: 'Not authorized' });
     const userId = req.user.id;
 
     // Get user context for better advice
@@ -26,13 +29,14 @@ const chat = async (req, res) => {
     });
 
     res.json({ advice });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 };
 
-const getAnalysis = async (req, res) => {
+export const getAnalysis = async (req: AuthRequest, res: Response) => {
   try {
+    if (!req.user) return res.status(401).json({ message: 'Not authorized' });
     const userId = req.user.id;
     const user = await prisma.user.findUnique({
       where: { id: userId },
@@ -41,9 +45,7 @@ const getAnalysis = async (req, res) => {
 
     const analysis = await AIService.analyzeRisk(user);
     res.json({ analysis });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 };
-
-module.exports = { chat, getAnalysis };
