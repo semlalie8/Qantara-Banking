@@ -2,7 +2,7 @@ import '../styles/globals.css';
 import { AuthProvider } from '../context/auth.context';
 
 export const metadata = {
-  title: 'MOUJ — Full-Stack Fintech Platform',
+  title: 'Qantara — Full-Stack Fintech Platform',
   description: 'AI-powered financial services in Morocco and beyond.',
 };
 

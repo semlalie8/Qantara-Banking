@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { useAuth } from '../context/auth.context';
+import { useAuth } from '../../context/auth.context';
 import Link from 'next/link';
 
 export default function RegisterPage() {
@@ -31,7 +31,7 @@ export default function RegisterPage() {
     <main className="hero" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
       <div className="hero-bg-grid"></div>
       <div className="glass-card" style={{ padding: '40px', width: '100%', maxWidth: '450px', position: 'relative', zIndex: 10 }}>
-        <h1 className="section-title" style={{ fontSize: '2rem', marginBottom: '8px' }}>Join <span className="gradient-text">MOUJ</span></h1>
+        <h1 className="section-title" style={{ fontSize: '2rem', marginBottom: '8px' }}>Join <span className="gradient-text">Qantara</span></h1>
         <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>Start your journey to financial intelligence.</p>
         
         {error && <p style={{ color: '#ef4444', marginBottom: '16px', fontSize: '0.875rem' }}>{error}</p>}

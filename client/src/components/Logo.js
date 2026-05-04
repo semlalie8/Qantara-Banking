@@ -13,7 +13,7 @@ export default function Logo({ size = 32, className = '' }) {
       >
         <motion.img 
           src="/logo.png" 
-          alt="MOUJ Logo" 
+          alt="Qantara Logo" 
           style={{ height: '100%', width: 'auto', borderRadius: '4px' }}
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -35,7 +35,7 @@ export default function Logo({ size = 32, className = '' }) {
           textTransform: 'uppercase'
         }}
       >
-        MOUJ
+        Qantara
       </motion.span>
     </Link>
   );

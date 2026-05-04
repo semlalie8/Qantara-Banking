@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { useAuth } from '../context/auth.context';
+import { useAuth } from '../../context/auth.context';
 import Link from 'next/link';
 
 export default function LoginPage() {
@@ -24,7 +24,7 @@ export default function LoginPage() {
       <div className="hero-bg-grid"></div>
       <div className="glass-card" style={{ padding: '40px', width: '100%', maxWidth: '400px', position: 'relative', zIndex: 10 }}>
         <h1 className="section-title" style={{ fontSize: '2rem', marginBottom: '8px' }}>Welcome <span className="gradient-text">Back</span></h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>Sign in to manage your MOUJ account.</p>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>Sign in to manage your Qantara account.</p>
         
         {error && <p style={{ color: '#ef4444', marginBottom: '16px', fontSize: '0.875rem' }}>{error}</p>}
         

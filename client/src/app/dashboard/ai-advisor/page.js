@@ -13,7 +13,7 @@ const models = [
 export default function AIAdvisorPage() {
   const { user } = useAuth();
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: `Hello ${user?.firstName}! I'm your MOUJ AI assistant. How can I help you with your finances today?`, model: 'qwen3.5:cloud' }
+    { role: 'assistant', content: `Hello ${user?.firstName}! I'm your Qantara AI assistant. How can I help you with your finances today?`, model: 'qwen3.5:cloud' }
   ]);
   const [input, setInput] = useState('');
   const [selectedModel, setSelectedModel] = useState(models[0]);

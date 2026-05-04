@@ -32,7 +32,7 @@ export default function LandingPage() {
             The Future of <span className="gradient-text">Intelligent Banking</span> is Here.
           </h1>
           <p className="hero-subtitle" style={{ maxWidth: '700px', margin: '0 auto 40px' }}>
-            MOUJ is bridging the gap between traditional banking and the digital future. 
+            Qantara is bridging the gap between traditional banking and the digital future. 
             AI-driven, secure, and accessible financial inclusion for all.
           </p>
           <div style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
@@ -101,7 +101,7 @@ export default function LandingPage() {
             </div>
           </div>
           <div style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.8rem', borderTop: '1px solid var(--border-subtle)', paddingTop: '40px' }}>
-            &copy; 2024 MOUJ. All rights reserved. 
+            &copy; 2024 Qantara. All rights reserved. 
           </div>
         </div>
       </footer>
