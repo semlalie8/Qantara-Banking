@@ -37,7 +37,7 @@ export default function RoadmapSection() {
       <div className="container">
         <SectionHeader 
           label="Growth Roadmap"
-          title={<>From Casablanca to the <span className="gradient-text">World</span></>}
+          title={<>From Morocco to the <span className="gradient-text">World</span></>}
           subtitle="A phased strategy: prove locally, scale regionally, dominate globally."
         />
 

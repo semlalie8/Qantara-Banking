@@ -1,17 +1,35 @@
 'use client';
 import Link from 'next/link';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Logo from '../Logo';
+import { useAuth } from '@/context/auth.context';
+import { motion, AnimatePresence } from 'framer-motion';
+import { User, LayoutDashboard, TrendingUp, LogOut, ChevronDown, ShieldCheck } from 'lucide-react';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const { user, logout } = useAuth();
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
+    
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowDropdown(false);
+      }
+    };
+
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    document.addEventListener('mousedown', handleClickOutside);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
 
   return (
@@ -27,21 +45,133 @@ export default function Navbar() {
         <Link href="/">
           <Logo size={32} />
         </Link>
+        
         <div style={{ display: 'flex', gap: '40px', alignItems: 'center' }}>
           <div style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
             {['Services', 'Market', 'Opportunity', 'Roadmap', 'Verticals'].map(item => (
               <Link 
                 key={item}
-                href={`#${item.toLowerCase()}`} 
+                href={`/#${item.toLowerCase()}`} 
                 style={{ fontSize: '0.85rem', fontWeight: '600', color: 'var(--text-secondary)', transition: 'var(--transition)' }}
               >
                 {item}
               </Link>
             ))}
+            <Link 
+              href="/contact" 
+              style={{ fontSize: '0.85rem', fontWeight: '600', color: 'var(--text-primary)', background: 'rgba(255,255,255,0.05)', padding: '6px 14px', borderRadius: '50px', border: '1px solid var(--border-subtle)', transition: 'var(--transition)' }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; }}
+            >
+              Contact
+            </Link>
           </div>
-          <div style={{ display: 'flex', gap: '16px' }}>
-            <Link href="/login" className="btn-secondary" style={{ padding: '10px 24px', fontSize: '0.85rem' }}>Login</Link>
-            <Link href="/register" className="btn-primary" style={{ padding: '10px 24px', fontSize: '0.85rem' }}>Get Started</Link>
+
+          <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+            {user ? (
+              <div style={{ position: 'relative' }} ref={dropdownRef}>
+                <button 
+                  onClick={() => setShowDropdown(!showDropdown)}
+                  style={{ 
+                    display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 12px',
+                    borderRadius: '50px', background: 'rgba(255,255,255,0.05)', 
+                    border: '1px solid var(--border-subtle)', color: 'var(--text-primary)',
+                    cursor: 'pointer', transition: 'var(--transition)'
+                  }}
+                >
+                  <div style={{ 
+                    width: '32px', height: '32px', borderRadius: '50%', overflow: 'hidden',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    border: user.role === 'ADMIN' ? '1.5px solid var(--accent-blue)' : 'none'
+                  }}>
+                    <img 
+                      src="/avatar.png" 
+                      alt="Avatar" 
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  </div>
+                  <span style={{ fontSize: '0.85rem', fontWeight: '600' }}>{user.firstName}</span>
+                  <ChevronDown size={16} style={{ transform: showDropdown ? 'rotate(180deg)' : 'none', transition: '0.3s' }} />
+                </button>
+
+                <AnimatePresence>
+                  {showDropdown && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                      style={{ 
+                        position: 'absolute', top: 'calc(100% + 12px)', right: 0, width: '200px',
+                        background: 'var(--bg-secondary)', border: '1px solid var(--border-subtle)',
+                        borderRadius: '16px', padding: '8px', boxShadow: 'var(--shadow-card)',
+                        overflow: 'hidden', backdropFilter: 'blur(20px)'
+                      }}
+                    >
+                      {user.role === 'ADMIN' && (
+                        <Link 
+                          href="/dashboard/admin" 
+                          onClick={() => setShowDropdown(false)}
+                          style={{ 
+                            display: 'flex', alignItems: 'center', gap: '12px', padding: '12px',
+                            borderRadius: '10px', fontSize: '0.85rem', color: 'var(--accent-blue)',
+                            fontWeight: '600', transition: 'var(--transition)'
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(37, 99, 235, 0.05)'}
+                          onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                        >
+                          <ShieldCheck size={18} /> Admin Panel
+                        </Link>
+                      )}
+                      <Link 
+                        href="/dashboard" 
+                        onClick={() => setShowDropdown(false)}
+                        style={{ 
+                          display: 'flex', alignItems: 'center', gap: '12px', padding: '12px',
+                          borderRadius: '10px', fontSize: '0.85rem', color: 'var(--text-secondary)',
+                          transition: 'var(--transition)'
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                      >
+                        <LayoutDashboard size={18} /> Dashboard
+                      </Link>
+                      <Link 
+                        href="/dashboard/wealth" 
+                        onClick={() => setShowDropdown(false)}
+                        style={{ 
+                          display: 'flex', alignItems: 'center', gap: '12px', padding: '12px',
+                          borderRadius: '10px', fontSize: '0.85rem', color: 'var(--text-secondary)',
+                          transition: 'var(--transition)'
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                      >
+                        <TrendingUp size={18} /> Portfolio
+                      </Link>
+                      <div style={{ height: '1px', background: 'var(--border-subtle)', margin: '4px 8px' }} />
+                      <button 
+                        onClick={() => { logout(); setShowDropdown(false); }}
+                        style={{ 
+                          width: '100%', display: 'flex', alignItems: 'center', gap: '12px', padding: '12px',
+                          borderRadius: '10px', fontSize: '0.85rem', color: '#ef4444',
+                          background: 'transparent', border: 'none', cursor: 'pointer',
+                          transition: 'var(--transition)'
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.05)'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                      >
+                        <LogOut size={18} /> Log Out
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
+              <>
+                <Link href="/login" className="btn-secondary" style={{ padding: '10px 24px', fontSize: '0.85rem' }}>Login</Link>
+                <Link href="/register" className="btn-primary" style={{ padding: '10px 24px', fontSize: '0.85rem' }}>Get Started</Link>
+              </>
+            )}
           </div>
         </div>
       </div>

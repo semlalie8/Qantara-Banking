@@ -28,10 +28,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const API_URL = 'http://localhost:5000/api/auth';
 
-  useEffect(() => {
-    checkUser();
-  }, []);
-
   const checkUser = async () => {
     try {
       const res = await axios.get(`${API_URL}/me`, { withCredentials: true });
@@ -42,6 +38,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    checkUser();
+  }, []);
 
   const login = async (email: string, password: string) => {
     const res = await axios.post(`${API_URL}/login`, { email, password }, { withCredentials: true });

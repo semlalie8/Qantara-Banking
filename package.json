@@ -1,0 +1,16 @@
+{
+  "name": "qantara-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "docker-compose up --build",
+    "stop": "docker-compose down",
+    "clean": "docker-compose down -v",
+    "logs": "docker-compose logs -f",
+    "setup": "npm install && cd client && npm install && cd ../server && npm install && npx prisma generate",
+    "build": "docker-compose build"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

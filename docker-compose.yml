@@ -30,6 +30,9 @@ services:
       - OLLAMA_BASE_URL=http://host.docker.internal:11434
     ports:
       - "5000:5000"
+    volumes:
+      - ./server:/app
+      - /app/node_modules
     depends_on:
       db:
         condition: service_healthy
@@ -42,6 +45,10 @@ services:
       - "3000:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:5000/api
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+      - /app/.next
     depends_on:
       - server
 

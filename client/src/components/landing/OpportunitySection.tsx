@@ -81,9 +81,9 @@ export default function OpportunitySection() {
               boxShadow: '0 20px 80px rgba(0,0,0,0.5)' 
             }}>
               <img 
-                src="https://images.unsplash.com/photo-1548345680-f5475ee511d7?auto=format&fit=crop&q=80&w=1200" 
-                alt="Morocco Innovation" 
-                style={{ width: '100%', height: 'auto', borderRadius: '16px', display: 'block' }} 
+                src="/casablanca-gateway.png" 
+                alt="Casablanca, Morocco — Africa's Gateway to Global Finance" 
+                style={{ width: '100%', height: '400px', objectFit: 'cover', borderRadius: '16px', display: 'block' }} 
               />
             </div>
             

@@ -8,6 +8,7 @@ import {
   ArrowUpRight, 
   ArrowDownLeft,
   Clock,
+  ShieldCheck,
   LucideIcon
 } from 'lucide-react';
 
@@ -31,11 +32,45 @@ export default function DashboardPage() {
 
   return (
     <div>
-      <header style={{ marginBottom: '32px' }}>
-        <h1 className="section-title" style={{ fontSize: '1.75rem', marginBottom: '4px' }}>
-          Welcome, <span className="gradient-text">{user?.firstName}</span>
-        </h1>
-        <p style={{ color: 'var(--text-secondary)' }}>Here's what's happening with your finances today.</p>
+      <header style={{ 
+        marginBottom: '40px', 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center' 
+      }}>
+        <div>
+          <h1 className="section-title" style={{ fontSize: '2.25rem', marginBottom: '8px' }}>
+            Welcome, <span className="gradient-text">{user?.firstName}</span>
+          </h1>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>Here's what's happening with your finances today.</p>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <div style={{ textAlign: 'right' }}>
+            <p style={{ fontWeight: '700', fontSize: '1rem' }}>{user?.firstName} {user?.lastName}</p>
+            <p style={{ fontSize: '0.8rem', color: 'var(--accent-blue)', fontWeight: '600' }}>
+              {user?.role === 'ADMIN' ? 'SYSTEM ADMINISTRATOR' : 'PREMIUM ACCOUNT'}
+            </p>
+          </div>
+          <div style={{ 
+            width: '64px', 
+            height: '64px', 
+            borderRadius: '20px', 
+            overflow: 'hidden',
+            border: '2px solid var(--border-subtle)',
+            boxShadow: 'var(--shadow-card)',
+            background: 'var(--bg-secondary)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <img 
+              src="/avatar.png" 
+              alt="Profile" 
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+          </div>
+        </div>
       </header>
 
       {/* Stats Grid */}

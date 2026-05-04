@@ -1,6 +1,5 @@
 'use client';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
 import React from 'react';
 
 interface LogoProps {
@@ -10,7 +9,7 @@ interface LogoProps {
 
 export default function Logo({ size = 32, className = '' }: LogoProps) {
   return (
-    <Link href="/" className={`logo-container ${className}`} style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
+    <div className={`logo-container ${className}`} style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
       <motion.div
         whileHover={{ scale: 1.1, rotate: 5 }}
         whileTap={{ scale: 0.9 }}
@@ -43,6 +42,6 @@ export default function Logo({ size = 32, className = '' }: LogoProps) {
       >
         Qantara
       </motion.span>
-    </Link>
+    </div>
   );
 }

@@ -18,7 +18,7 @@ export default function StatsSection() {
       <div className="container">
         <SectionHeader 
           label="Market Opportunity"
-          title={<>Morocco's <span className="gradient-text">Fintech Frontier</span></>}
+          title={<>Morocco&apos;s <span className="gradient-text">Fintech Frontier</span></>}
           subtitle="A massive, underserved market with the infrastructure ready for digital disruption."
         />
 
