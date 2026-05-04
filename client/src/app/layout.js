@@ -1,5 +1,5 @@
 import '../styles/globals.css';
-import { AuthProvider } from '../context/auth.context';
+import { AuthProvider } from '@/context/auth.context';
 
 export const metadata = {
   title: 'Qantara — Full-Stack Fintech Platform',

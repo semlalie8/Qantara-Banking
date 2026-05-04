@@ -1,6 +1,6 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
-import { useAuth } from '../../../context/auth.context';
+import { useAuth } from '@/context/auth.context';
 import { Send, Bot, User, Sparkles, Brain, ShieldCheck, Zap } from 'lucide-react';
 
 const models = [
