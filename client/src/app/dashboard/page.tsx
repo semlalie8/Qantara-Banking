@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import { useAuth } from '@/context/auth.context';
+import { useLanguage } from '@/context/language.context';
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -22,12 +23,13 @@ interface Stat {
 
 export default function DashboardPage() {
   const { user } = useAuth();
+  const { t } = useLanguage();
 
   const stats: Stat[] = [
-    { name: 'Total Balance', value: '45,230.00 MAD', icon: Wallet, change: '+2.4%', trend: 'up' },
-    { name: 'Monthly Income', value: '12,500.00 MAD', icon: ArrowUpRight, change: '+12%', trend: 'up' },
-    { name: 'Monthly Expenses', value: '8,420.00 MAD', icon: ArrowDownLeft, change: '-4%', trend: 'down' },
-    { name: 'Active Loans', value: '1,200.00 MAD', icon: Clock, change: 'Due in 5 days', trend: 'neutral' },
+    { name: t('dashboard.total_balance'), value: '45,230.00 MAD', icon: Wallet, change: '+2.4%', trend: 'up' },
+    { name: t('dashboard.monthly_income'), value: '12,500.00 MAD', icon: ArrowUpRight, change: '+12%', trend: 'up' },
+    { name: t('dashboard.monthly_expenses'), value: '8,420.00 MAD', icon: ArrowDownLeft, change: '-4%', trend: 'down' },
+    { name: t('dashboard.active_loans'), value: '1,200.00 MAD', icon: Clock, change: 'Due in 5 days', trend: 'neutral' },
   ];
 
   return (
@@ -40,16 +42,16 @@ export default function DashboardPage() {
       }}>
         <div>
           <h1 className="section-title" style={{ fontSize: '2.25rem', marginBottom: '8px' }}>
-            Welcome, <span className="gradient-text">{user?.firstName}</span>
+            {t('common.welcome')}, <span className="gradient-text">{user?.firstName}</span>
           </h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>Here's what's happening with your finances today.</p>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>{t('common.finances_overview')}</p>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
           <div style={{ textAlign: 'right' }}>
             <p style={{ fontWeight: '700', fontSize: '1rem' }}>{user?.firstName} {user?.lastName}</p>
             <p style={{ fontSize: '0.8rem', color: 'var(--accent-blue)', fontWeight: '600' }}>
-              {user?.role === 'ADMIN' ? 'SYSTEM ADMINISTRATOR' : 'PREMIUM ACCOUNT'}
+              {user?.role === 'ADMIN' ? t('common.admin_panel') : t('common.premium_account')}
             </p>
           </div>
           <div style={{ 
@@ -66,7 +68,7 @@ export default function DashboardPage() {
           }}>
             <img 
               src="/avatar.png" 
-              alt="Profile" 
+              alt={t('common.profile')} 
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
           </div>
@@ -107,7 +109,7 @@ export default function DashboardPage() {
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px' }}>
         {/* Recent Transactions */}
         <div className="glass-card" style={{ padding: '24px' }}>
-          <h3 style={{ fontSize: '1.1rem', marginBottom: '20px' }}>Recent Transactions</h3>
+          <h3 style={{ fontSize: '1.1rem', marginBottom: '20px' }}>{t('dashboard.recent_transactions')}</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {[1, 2, 3, 4].map((i) => (
               <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '16px', borderBottom: i !== 4 ? '1px solid var(--border-subtle)' : 'none' }}>
@@ -131,13 +133,13 @@ export default function DashboardPage() {
         {/* AI Quick Insight */}
         <div className="glass-card" style={{ padding: '24px', background: 'var(--gradient-card)' }}>
           <h3 style={{ fontSize: '1.1rem', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '1.2rem' }}>✨</span> AI Insight
+            <span style={{ fontSize: '1.2rem' }}>✨</span> {t('dashboard.ai_insight')}
           </h3>
           <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: '1.6', marginBottom: '20px' }}>
             Based on your spending this week, you've spent 15% more on groceries than usual. Our <strong>qwen3.5:cloud</strong> advisor suggests moving 500 MAD to your "Emergency Fund" to stay on track.
           </p>
           <button className="btn-secondary" style={{ width: '100%', fontSize: '0.8rem', padding: '10px' }}>
-            Ask Advisor
+            {t('dashboard.ask_advisor')}
           </button>
         </div>
       </div>

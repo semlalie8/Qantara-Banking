@@ -3,39 +3,43 @@ import { motion } from 'framer-motion';
 import { Banknote, CreditCard, PieChart, CheckCircle2 } from 'lucide-react';
 import React from 'react';
 import SectionHeader from './SectionHeader';
-
-const services = [
-  {
-    icon: <CreditCard size={32} />,
-    title: 'Digital Payments',
-    description: 'Seamless payment infrastructure connecting mobile wallets, merchant POS, and cross-border transfers.',
-    features: ['Mobile money integration', 'QR-based payments', 'Remittance APIs', 'Real-time settlement'],
-    color: 'var(--accent-blue)'
-  },
-  {
-    icon: <Banknote size={32} />,
-    title: 'Smart Lending',
-    description: 'AI-powered credit scoring and micro-lending for the 15 million unbanked Moroccans and SMEs.',
-    features: ['Alternative data scoring', 'Micro-loans for gig workers', 'SME invoice financing', 'P2P lending platform'],
-    color: 'var(--accent-teal)'
-  },
-  {
-    icon: <PieChart size={32} />,
-    title: 'Wealth Management',
-    description: 'Robo-advisory and micro-investing tools making wealth building accessible to every Moroccan.',
-    features: ['AI-driven budget advisor', 'Micro-investing from 10 MAD', 'Automated savings plans', 'Green finance portfolios'],
-    color: 'var(--accent-cyan)'
-  }
-];
+import { useLanguage } from '@/context/language.context';
 
 export default function ServicesSection() {
+  const { t, locale } = useLanguage();
+  const isRTL = locale === 'ar';
+
+  const services = [
+    {
+      icon: <CreditCard size={32} />,
+      title: t('services.service1_title'),
+      description: t('services.service1_desc'),
+      features: [t('services.s1_f1'), t('services.s1_f2'), t('services.s1_f3'), t('services.s1_f4')],
+      color: 'var(--accent-blue)'
+    },
+    {
+      icon: <Banknote size={32} />,
+      title: t('services.service2_title'),
+      description: t('services.service2_desc'),
+      features: [t('services.s2_f1'), t('services.s2_f2'), t('services.s2_f3'), t('services.s2_f4')],
+      color: 'var(--accent-teal)'
+    },
+    {
+      icon: <PieChart size={32} />,
+      title: t('services.service3_title'),
+      description: t('services.service3_desc'),
+      features: [t('services.s3_f1'), t('services.s3_f2'), t('services.s3_f3'), t('services.s3_f4')],
+      color: 'var(--accent-cyan)'
+    }
+  ];
+
   return (
     <section id="services" style={{ padding: '120px 0' }}>
       <div className="container">
         <SectionHeader 
-          label="Core Services"
-          title={<>Three Pillars of <span className="gradient-text">Modern Finance</span></>}
-          subtitle="Purpose-built financial infrastructure designed for Morocco's unique market — and ready to scale across continents."
+          label={t('services.label')}
+          title={<>{t('services.title_start')} <span className="gradient-text">{t('services.title_gradient')}</span></>}
+          subtitle={t('services.subtitle')}
         />
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px' }}>
@@ -48,7 +52,7 @@ export default function ServicesSection() {
               transition={{ duration: 0.5, delay: i * 0.1 }}
               whileHover={{ y: -10 }}
               className="glass-card"
-              style={{ padding: '40px', position: 'relative', overflow: 'hidden' }}
+              style={{ padding: '40px', position: 'relative', overflow: 'hidden', textAlign: isRTL ? 'right' : 'left' }}
             >
               <div style={{ 
                 width: '64px', height: '64px', borderRadius: '16px', 

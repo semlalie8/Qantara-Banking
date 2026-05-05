@@ -5,7 +5,7 @@ import { AuthRequest } from '../middleware/auth';
 
 export const chat = async (req: AuthRequest, res: Response) => {
   try {
-    const { message, model } = req.body;
+    const { message, model, language } = req.body;
     if (!req.user) return res.status(401).json({ message: 'Not authorized' });
     const userId = req.user.id;
 
@@ -17,7 +17,8 @@ export const chat = async (req: AuthRequest, res: Response) => {
 
     const advice = await AIService.generateResponse(
       `User Profile: ${JSON.stringify(user)}\nUser Message: ${message}`,
-      model || 'qwen3.5:9b'
+      model || 'qwen3.5:9b',
+      language || 'en'
     );
 
     // Save chat messages

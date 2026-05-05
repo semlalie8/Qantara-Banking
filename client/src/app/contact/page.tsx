@@ -5,7 +5,11 @@ import Footer from '@/components/landing/Footer';
 import { motion } from 'framer-motion';
 import { MapPin, Mail, Phone } from 'lucide-react';
 
+import { useLanguage } from '@/context/language.context';
+
 export default function ContactPage() {
+  const { t, locale } = useLanguage();
+  const isRTL = locale === 'ar';
   const [formState, setFormState] = useState({ name: '', email: '', subject: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -32,7 +36,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', direction: isRTL ? 'rtl' : 'ltr' }}>
       <Navbar />
       
       <main style={{ flex: 1, paddingTop: '160px', paddingBottom: '120px' }}>
@@ -45,114 +49,112 @@ export default function ContactPage() {
           >
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 16px', background: 'rgba(56, 189, 248, 0.1)', borderRadius: '50px', border: '1px solid rgba(56, 189, 248, 0.2)', marginBottom: '24px' }}>
               <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--accent-blue)' }} />
-              <span style={{ color: 'var(--accent-blue)', fontSize: '0.85rem', fontWeight: '600', letterSpacing: '1px', textTransform: 'uppercase' }}>Get in Touch</span>
+              <span style={{ color: 'var(--accent-blue)', fontSize: '0.85rem', fontWeight: '600', letterSpacing: '1px', textTransform: 'uppercase' }}>{t('contact.badge')}</span>
             </div>
             <h1 style={{ fontSize: '3.5rem', marginBottom: '24px' }}>
-              Contact <span className="gradient-text">Qantara</span>
+              {t('contact.title')} <span className="gradient-text">Qantara</span>
             </h1>
             <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto', lineHeight: '1.6' }}>
-              Have questions about our API, licensing, or enterprise solutions? Our team is ready to assist you.
+              {t('contact.subtitle')}
             </p>
           </motion.div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px', alignItems: 'flex-start' }}>
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
+              initial={{ opacity: 0, x: isRTL ? 30 : -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <h3 style={{ fontSize: '1.8rem', marginBottom: '32px' }}>Send us a message</h3>
+              <h3 style={{ fontSize: '1.8rem', marginBottom: '32px', textAlign: isRTL ? 'right' : 'left' }}>{t('contact.form_title')}</h3>
               {submitted ? (
                 <div style={{ padding: '32px', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.2)', borderRadius: '16px', textAlign: 'center' }}>
-                  <h4 style={{ color: '#10b981', fontSize: '1.2rem', marginBottom: '12px' }}>Message Sent!</h4>
-                  <p style={{ color: 'var(--text-secondary)' }}>Thank you for reaching out. We will get back to you shortly.</p>
+                  <h4 style={{ color: '#10b981', fontSize: '1.2rem', marginBottom: '12px' }}>{t('contact.success_title')}</h4>
+                  <p style={{ color: 'var(--text-secondary)' }}>{t('contact.success_message')}</p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Full Name</label>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', textAlign: isRTL ? 'right' : 'left' }}>
+                    <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{t('contact.name_label')}</label>
                     <input 
                       type="text" 
                       required
                       value={formState.name}
                       onChange={(e) => setFormState({...formState, name: e.target.value})}
-                      style={{ padding: '14px', background: 'var(--bg-secondary)', border: '1px solid var(--border-subtle)', borderRadius: '12px', color: 'var(--text-primary)', fontSize: '1rem', outline: 'none' }}
-                      placeholder="Jane Doe"
+                      style={{ padding: '14px', background: 'var(--bg-secondary)', border: '1px solid var(--border-subtle)', borderRadius: '12px', color: 'var(--text-primary)', fontSize: '1rem', outline: 'none', textAlign: isRTL ? 'right' : 'left' }}
+                      placeholder={t('contact.name_placeholder')}
                     />
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Email Address</label>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', textAlign: isRTL ? 'right' : 'left' }}>
+                    <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{t('contact.email_label')}</label>
                     <input 
                       type="email" 
                       required
                       value={formState.email}
                       onChange={(e) => setFormState({...formState, email: e.target.value})}
-                      style={{ padding: '14px', background: 'var(--bg-secondary)', border: '1px solid var(--border-subtle)', borderRadius: '12px', color: 'var(--text-primary)', fontSize: '1rem', outline: 'none' }}
-                      placeholder="jane@example.com"
+                      style={{ padding: '14px', background: 'var(--bg-secondary)', border: '1px solid var(--border-subtle)', borderRadius: '12px', color: 'var(--text-primary)', fontSize: '1rem', outline: 'none', textAlign: isRTL ? 'right' : 'left' }}
+                      placeholder={t('contact.email_placeholder')}
                     />
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Subject</label>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', textAlign: isRTL ? 'right' : 'left' }}>
+                    <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{t('contact.subject_label')}</label>
                     <input 
                       type="text" 
                       required
                       value={formState.subject}
                       onChange={(e) => setFormState({...formState, subject: e.target.value})}
-                      style={{ padding: '14px', background: 'var(--bg-secondary)', border: '1px solid var(--border-subtle)', borderRadius: '12px', color: 'var(--text-primary)', fontSize: '1rem', outline: 'none' }}
-                      placeholder="Partnership Inquiry"
+                      style={{ padding: '14px', background: 'var(--bg-secondary)', border: '1px solid var(--border-subtle)', borderRadius: '12px', color: 'var(--text-primary)', fontSize: '1rem', outline: 'none', textAlign: isRTL ? 'right' : 'left' }}
+                      placeholder={t('contact.subject_placeholder')}
                     />
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Message</label>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', textAlign: isRTL ? 'right' : 'left' }}>
+                    <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{t('contact.message_label')}</label>
                     <textarea 
                       required
                       value={formState.message}
                       onChange={(e) => setFormState({...formState, message: e.target.value})}
-                      style={{ padding: '14px', background: 'var(--bg-secondary)', border: '1px solid var(--border-subtle)', borderRadius: '12px', color: 'var(--text-primary)', fontSize: '1rem', minHeight: '150px', outline: 'none', resize: 'vertical' }}
-                      placeholder="How can we help you?"
+                      style={{ padding: '14px', background: 'var(--bg-secondary)', border: '1px solid var(--border-subtle)', borderRadius: '12px', color: 'var(--text-primary)', fontSize: '1rem', minHeight: '150px', outline: 'none', resize: 'vertical', textAlign: isRTL ? 'right' : 'left' }}
+                      placeholder={t('contact.message_placeholder')}
                     />
                   </div>
                   <button type="submit" disabled={loading} className="btn-primary" style={{ padding: '16px', fontSize: '1rem', marginTop: '10px', opacity: loading ? 0.7 : 1 }}>
-                    {loading ? 'Sending...' : 'Send Message'}
+                    {loading ? t('contact.sending') : t('contact.send_button')}
                   </button>
                 </form>
               )}
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
+              initial={{ opacity: 0, x: isRTL ? -30 : 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}
+              style={{ display: 'flex', flexDirection: 'column', gap: '40px', textAlign: isRTL ? 'right' : 'left' }}
             >
               <div>
-                <h3 style={{ fontSize: '1.8rem', marginBottom: '24px' }}>Contact Information</h3>
+                <h3 style={{ fontSize: '1.8rem', marginBottom: '24px' }}>{t('contact.info_title')}</h3>
                 <p style={{ color: 'var(--text-secondary)', lineHeight: '1.7', marginBottom: '32px' }}>
-                  Whether you're looking to partner, invest, or simply learn more about our fintech infrastructure, we're here to connect.
+                  {t('contact.info_subtitle')}
                 </p>
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start' }}>
+                <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', flexDirection: isRTL ? 'row-reverse' : 'row' }}>
                   <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(56, 189, 248, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-blue)', flexShrink: 0 }}>
                     <MapPin size={24} />
                   </div>
                   <div>
-                    <h4 style={{ fontSize: '1.1rem', marginBottom: '8px' }}>Headquarters</h4>
-                    <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-                      Casablanca Finance City<br />
-                      Tour CFC, Casa-Anfa<br />
-                      Casablanca, Morocco
+                    <h4 style={{ fontSize: '1.1rem', marginBottom: '8px' }}>{t('contact.hq_title')}</h4>
+                    <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6', whiteSpace: 'pre-line' }}>
+                      {t('contact.hq_address')}
                     </p>
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start' }}>
+                <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', flexDirection: isRTL ? 'row-reverse' : 'row' }}>
                   <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(45, 212, 191, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-teal)', flexShrink: 0 }}>
                     <Mail size={24} />
                   </div>
                   <div>
-                    <h4 style={{ fontSize: '1.1rem', marginBottom: '8px' }}>Email Us</h4>
+                    <h4 style={{ fontSize: '1.1rem', marginBottom: '8px' }}>{t('contact.email_title')}</h4>
                     <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                       contact@qantara.ma<br />
                       support@qantara.ma
@@ -160,15 +162,15 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start' }}>
+                <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', flexDirection: isRTL ? 'row-reverse' : 'row' }}>
                   <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(168, 85, 247, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#a855f7', flexShrink: 0 }}>
                     <Phone size={24} />
                   </div>
                   <div>
-                    <h4 style={{ fontSize: '1.1rem', marginBottom: '8px' }}>Call Us</h4>
+                    <h4 style={{ fontSize: '1.1rem', marginBottom: '8px' }}>{t('contact.phone_title')}</h4>
                     <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                       +212 522 00 00 00<br />
-                      Mon-Fri, 9am - 6pm (GMT+1)
+                      {t('contact.phone_hours')}
                     </p>
                   </div>
                 </div>

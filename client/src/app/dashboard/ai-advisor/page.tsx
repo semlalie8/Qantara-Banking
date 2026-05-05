@@ -1,6 +1,8 @@
 'use client';
 import React, { useState, useRef, useEffect, FormEvent } from 'react';
 import { useAuth } from '@/context/auth.context';
+import { useLanguage } from '@/context/language.context';
+import axios from 'axios';
 import { Send, Bot, User, Sparkles, Brain, ShieldCheck, Zap, LucideIcon } from 'lucide-react';
 
 interface Model {
@@ -11,10 +13,10 @@ interface Model {
 }
 
 const models: Model[] = [
-  { id: 'qwen3.5:cloud', name: 'Primary Advisor', icon: Sparkles, color: 'var(--accent-blue)' },
-  { id: 'deepseek-r1:8b', name: 'Reasoning Engine', icon: Brain, color: 'var(--accent-teal)' },
-  { id: 'gemma4:E4B', name: 'Fraud Watch', icon: ShieldCheck, color: '#ef4444' },
-  { id: 'gemma4:E2B', name: 'Quick Helper', icon: Zap, color: 'var(--accent-cyan)' },
+  { id: 'qwen3.5:cloud', name: 'ai.primary_advisor', icon: Sparkles, color: 'var(--accent-blue)' },
+  { id: 'deepseek-r1:8b', name: 'ai.reasoning_engine', icon: Brain, color: 'var(--accent-teal)' },
+  { id: 'gemma4:E4B', name: 'ai.fraud_watch', icon: ShieldCheck, color: '#ef4444' },
+  { id: 'gemma4:E2B', name: 'ai.quick_helper', icon: Zap, color: 'var(--accent-cyan)' },
 ];
 
 interface Message {
@@ -25,8 +27,9 @@ interface Message {
 
 export default function AIAdvisorPage() {
   const { user } = useAuth();
+  const { t, locale } = useLanguage();
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: `Hello ${user?.firstName}! I'm your Qantara AI assistant. How can I help you with your finances today?`, model: 'qwen3.5:cloud' }
+    { role: 'assistant', content: t('ai.initial_greeting', { name: user?.firstName }), model: 'qwen3.5:cloud' }
   ]);
   const [input, setInput] = useState('');
   const [selectedModel, setSelectedModel] = useState<Model>(models[0]);
@@ -49,18 +52,31 @@ export default function AIAdvisorPage() {
     setIsTyping(true);
 
     try {
-      // In a real app, this would call our backend API
-      setTimeout(() => {
-        const aiResponse: Message = { 
-          role: 'assistant', 
-          content: `I'm analyzing your request using the ${selectedModel.name} model. Based on your current balance of 45,230 MAD, I recommend optimizing your monthly savings by diversifying into local equity markets.`,
-          model: selectedModel.id
-        };
-        setMessages(prev => [...prev, aiResponse]);
-        setIsTyping(false);
-      }, 1500);
+      const response = await axios.post('http://localhost:5000/api/ai/chat', {
+        message: input,
+        model: selectedModel.id,
+        language: locale
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('qantara_token')}`
+        }
+      });
+
+      const aiResponse: Message = { 
+        role: 'assistant', 
+        content: response.data.advice,
+        model: selectedModel.id
+      };
+      setMessages(prev => [...prev, aiResponse]);
+      setIsTyping(false);
     } catch (err) {
       console.error(err);
+      const errorMsg: Message = {
+        role: 'assistant',
+        content: t('ai.error_message'),
+        model: 'system-error'
+      };
+      setMessages(prev => [...prev, errorMsg]);
       setIsTyping(false);
     }
   };
@@ -69,8 +85,8 @@ export default function AIAdvisorPage() {
     <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 120px)' }}>
       <header style={{ marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <h1 className="section-title" style={{ fontSize: '1.5rem', marginBottom: '4px' }}>AI Financial <span className="gradient-text">Advisor</span></h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Personalized financial guidance powered by multiple LLMs.</p>
+          <h1 className="section-title" style={{ fontSize: '1.5rem', marginBottom: '4px' }}>{t('ai.advisor_title')} <span className="gradient-text">Advisor</span></h1>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>{t('ai.advisor_subtitle')}</p>
         </div>
         
         <div style={{ display: 'flex', gap: '8px' }}>
@@ -94,7 +110,7 @@ export default function AIAdvisorPage() {
               }}
             >
               <model.icon size={14} color={selectedModel.id === model.id ? model.color : 'currentColor'} />
-              {model.name.split(' ')[0]}
+              {t(model.name).split(' ')[0]}
             </button>
           ))}
         </div>
@@ -136,7 +152,7 @@ export default function AIAdvisorPage() {
                 <p>{msg.content}</p>
                 {msg.model && (
                   <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.4)', marginTop: '4px', display: 'block' }}>
-                    Model: {msg.model}
+                    {t('ai.model_label')}: {msg.model === 'system-error' ? t('common.system') : msg.model}
                   </span>
                 )}
               </div>
@@ -180,7 +196,7 @@ export default function AIAdvisorPage() {
             <input 
               type="text" 
               className="cta-input" 
-              placeholder={`Ask ${selectedModel.name}...`}
+              placeholder={t('ai.ask_placeholder', { name: t(selectedModel.name) })}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               style={{ flex: 1, height: '48px' }}

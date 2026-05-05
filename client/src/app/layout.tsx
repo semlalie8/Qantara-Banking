@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import '../styles/globals.css';
 import { AuthProvider } from '@/context/auth.context';
+import { LanguageProvider } from '@/context/language.context';
 
 export const metadata = {
   title: 'Qantara — Full-Stack Fintech Platform',
@@ -9,13 +10,15 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html>
       <head>
         <link rel="icon" href="/favicon.png" />
       </head>
       <body>
         <AuthProvider>
-          {children}
+          <LanguageProvider>
+            {children}
+          </LanguageProvider>
         </AuthProvider>
       </body>
     </html>

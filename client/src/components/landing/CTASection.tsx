@@ -1,8 +1,11 @@
 'use client';
 import { motion } from 'framer-motion';
 import React, { useState, FormEvent } from 'react';
+import { useLanguage } from '@/context/language.context';
 
 export default function CTASection() {
+  const { t, locale } = useLanguage();
+  const isRTL = locale === 'ar';
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
@@ -22,7 +25,7 @@ export default function CTASection() {
         opacity: 0.1, filter: 'blur(120px)', borderRadius: '50%', zIndex: 0
       }} />
 
-      <div className="container" style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
+      <div className="container" style={{ position: 'relative', zIndex: 1, textAlign: 'center', direction: isRTL ? 'rtl' : 'ltr' }}>
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -31,26 +34,31 @@ export default function CTASection() {
           className="glass-card"
           style={{ padding: '80px 40px', maxWidth: '900px', margin: '0 auto' }}
         >
-          <span style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--accent-teal)', textTransform: 'uppercase', marginBottom: '16px', display: 'block' }}>✦ Join the Movement</span>
-          <h2 style={{ fontSize: '3.5rem', marginBottom: '20px' }}>Be Part of Morocco's <span className="gradient-text">Fintech Revolution</span></h2>
+          <span style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--accent-teal)', textTransform: 'uppercase', marginBottom: '16px', display: 'block' }}>
+            {t('cta.badge')}
+          </span>
+          <h2 style={{ fontSize: '3.5rem', marginBottom: '20px' }}>
+            {t('cta.title_start')} <span className="gradient-text">{t('cta.title_gradient')}</span>
+          </h2>
           <p style={{ maxWidth: '600px', margin: '0 auto 40px', color: 'var(--text-secondary)', fontSize: '1.1rem' }}>
-            Get early access to Qantara's platform. Investors, partners, and early adopters — we're building something extraordinary.
+            {t('cta.subtitle')}
           </p>
 
           <form onSubmit={handleSubmit} style={{ 
-            display: 'flex', gap: '12px', maxWidth: '500px', margin: '0 auto' 
+            display: 'flex', gap: '12px', maxWidth: '500px', margin: '0 auto',
+            flexDirection: isRTL ? 'row-reverse' : 'row'
           }}>
             <input 
               type="email" 
               className="cta-input" 
-              placeholder="Enter your email address" 
+              placeholder={t('cta.placeholder')} 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              style={{ flex: 1, height: '56px' }}
+              style={{ flex: 1, height: '56px', textAlign: isRTL ? 'right' : 'left' }}
             />
             <button type="submit" className="btn-primary" style={{ padding: '0 32px', height: '56px' }}>
-              Join Waitlist
+              {t('cta.button')}
             </button>
           </form>
 
@@ -60,7 +68,7 @@ export default function CTASection() {
               animate={{ opacity: 1, y: 0 }}
               style={{ marginTop: '20px', color: 'var(--accent-teal)', fontWeight: '600' }}
             >
-              ✓ Thank you! You've been added to the Qantara waitlist.
+              {t('cta.success')}
             </motion.p>
           )}
         </motion.div>

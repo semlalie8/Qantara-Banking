@@ -3,55 +3,59 @@ import { motion } from 'framer-motion';
 import { Building2, Globe, Lock, Zap } from 'lucide-react';
 import React from 'react';
 import SectionHeader from './SectionHeader';
-
-const features = [
-  {
-    icon: <Building2 size={24} />,
-    title: 'Regulatory Support',
-    description: 'Morocco Fintech Center backed by 15+ banks and government — with sandbox programs and streamlined licensing.',
-    color: 'var(--accent-blue)'
-  },
-  {
-    icon: <Globe size={24} />,
-    title: 'Diaspora Network',
-    description: '$10B+ annual remittances from Europe create a massive cross-border payments opportunity.',
-    color: 'var(--accent-teal)'
-  },
-  {
-    icon: <Lock size={24} />,
-    title: 'GDPR-Aligned Privacy',
-    description: 'Data protection law (CNDP), onshore hosting, and EU adequacy path — enterprise-grade compliance from day one.',
-    color: 'var(--accent-cyan)'
-  },
-  {
-    icon: <Zap size={24} />,
-    title: 'Crypto & CBDC Roadmap',
-    description: 'Draft crypto regulation and Central Bank Digital Currency exploration opening blockchain-native fintech services.',
-    color: 'var(--accent-blue)'
-  }
-];
+import { useLanguage } from '@/context/language.context';
 
 export default function OpportunitySection() {
+  const { t, locale } = useLanguage();
+  const isRTL = locale === 'ar';
+
+  const features = [
+    {
+      icon: <Building2 size={24} />,
+      title: t('opportunity.feature1_title'),
+      description: t('opportunity.feature1_desc'),
+      color: 'var(--accent-blue)'
+    },
+    {
+      icon: <Globe size={24} />,
+      title: t('opportunity.feature2_title'),
+      description: t('opportunity.feature2_desc'),
+      color: 'var(--accent-teal)'
+    },
+    {
+      icon: <Lock size={24} />,
+      title: t('opportunity.feature3_title'),
+      description: t('opportunity.feature3_desc'),
+      color: 'var(--accent-cyan)'
+    },
+    {
+      icon: <Zap size={24} />,
+      title: t('opportunity.feature4_title'),
+      description: t('opportunity.feature4_desc'),
+      color: 'var(--accent-blue)'
+    }
+  ];
+
   return (
     <section id="opportunity" style={{ padding: '120px 0' }}>
-      <div className="container">
-        <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: '80px', alignItems: 'center' }}>
+      <div className="container" style={{ direction: isRTL ? 'rtl' : 'ltr' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isRTL ? '0.9fr 1.1fr' : '1.1fr 0.9fr', gap: '80px', alignItems: 'center' }}>
           <div>
             <SectionHeader 
-              label="Why Morocco"
-              title={<>Africa's Gateway to <span className="gradient-text">Global Finance</span></>}
-              subtitle="Morocco sits at the crossroads of Africa, Europe, and the Middle East — with regulatory momentum, a massive diaspora, and a digitally-connected young population ready for fintech."
+              label={t('opportunity.label')}
+              title={t('opportunity.title')}
+              subtitle={t('opportunity.subtitle')}
             />
             
             <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '32px', marginTop: '40px' }}>
               {features.map((feature, i) => (
                 <motion.div
                   key={feature.title}
-                  initial={{ opacity: 0, x: -30 }}
+                  initial={{ opacity: 0, x: isRTL ? 30 : -30 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
-                  style={{ display: 'flex', gap: '20px' }}
+                  style={{ display: 'flex', gap: '20px', flexDirection: isRTL ? 'row-reverse' : 'row' }}
                 >
                   <div style={{ 
                     flexShrink: 0, width: '48px', height: '48px', borderRadius: '12px', 
@@ -60,7 +64,7 @@ export default function OpportunitySection() {
                   }}>
                     {feature.icon}
                   </div>
-                  <div>
+                  <div style={{ textAlign: isRTL ? 'right' : 'left' }}>
                     <h4 style={{ fontSize: '1.1rem', marginBottom: '8px' }}>{feature.title}</h4>
                     <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: '1.6' }}>{feature.description}</p>
                   </div>
@@ -82,23 +86,27 @@ export default function OpportunitySection() {
             }}>
               <img 
                 src="/casablanca-gateway.png" 
-                alt="Casablanca, Morocco — Africa's Gateway to Global Finance" 
+                alt={t('opportunity.title')} 
                 style={{ width: '100%', height: '400px', objectFit: 'cover', borderRadius: '16px', display: 'block' }} 
               />
+              <div style={{ padding: '12px 8px 4px', fontSize: '0.8rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
+                {t('opportunity.image_caption')}
+              </div>
             </div>
             
             {/* Overlay Badge */}
             <div style={{ 
-              position: 'absolute', bottom: '40px', right: '-20px',
+              position: 'absolute', bottom: '40px', left: isRTL ? '-20px' : 'auto', right: isRTL ? 'auto' : '-20px',
               padding: '20px', background: 'var(--bg-primary)', border: '1px solid var(--border-subtle)',
-              borderRadius: '16px', boxShadow: 'var(--shadow-card)', zIndex: 10
+              borderRadius: '16px', boxShadow: 'var(--shadow-card)', zIndex: 10,
+              textAlign: isRTL ? 'right' : 'left'
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px', flexDirection: isRTL ? 'row-reverse' : 'row' }}>
                 <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--accent-teal)' }} />
-                <span style={{ fontSize: '0.75rem', fontWeight: '700', letterSpacing: '1px' }}>MARKET POTENTIAL</span>
+                <span style={{ fontSize: '0.75rem', fontWeight: '700', letterSpacing: '1px' }}>{t('opportunity.market_potential')}</span>
               </div>
-              <h3 style={{ fontSize: '1.5rem', color: 'var(--accent-teal)' }}>$7.2 Trillion</h3>
-              <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>By 2030 in Embedded Finance</p>
+              <h3 style={{ fontSize: '1.5rem', color: 'var(--accent-teal)' }}>{t('opportunity.potential_value')}</h3>
+              <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{t('opportunity.potential_label')}</p>
             </div>
           </motion.div>
         </div>

@@ -3,13 +3,16 @@ import Link from 'next/link';
 import React, { useState, useEffect, useRef } from 'react';
 import Logo from '../Logo';
 import { useAuth } from '@/context/auth.context';
+import { useLanguage } from '../../context/language.context';
+import LanguageSwitcher from '../LanguageSwitcher';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, LayoutDashboard, TrendingUp, LogOut, ChevronDown, ShieldCheck } from 'lucide-react';
+import { User, LayoutDashboard, TrendingUp, LogOut, ChevronDown, ShieldCheck, Settings } from 'lucide-react';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const { user, logout } = useAuth();
+  const { t } = useLanguage();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -54,7 +57,7 @@ export default function Navbar() {
                 href={`/#${item.toLowerCase()}`} 
                 style={{ fontSize: '0.85rem', fontWeight: '600', color: 'var(--text-secondary)', transition: 'var(--transition)' }}
               >
-                {item}
+                {t(`nav.${item.toLowerCase()}`)}
               </Link>
             ))}
             <Link 
@@ -63,11 +66,14 @@ export default function Navbar() {
               onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; }}
             >
-              Contact
+              {t('common.contact')}
             </Link>
           </div>
 
-          <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+            <LanguageSwitcher />
+            <div style={{ height: '20px', width: '1px', background: 'var(--border-subtle)' }} />
+
             {user ? (
               <div style={{ position: 'relative' }} ref={dropdownRef}>
                 <button 
@@ -86,7 +92,7 @@ export default function Navbar() {
                   }}>
                     <img 
                       src="/avatar.png" 
-                      alt="Avatar" 
+                      alt={t('common.avatar')} 
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                   </div>
@@ -119,7 +125,7 @@ export default function Navbar() {
                           onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(37, 99, 235, 0.05)'}
                           onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                         >
-                          <ShieldCheck size={18} /> Admin Panel
+                          <ShieldCheck size={18} /> {t('common.admin_panel')}
                         </Link>
                       )}
                       <Link 
@@ -133,7 +139,20 @@ export default function Navbar() {
                         onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
                         onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                       >
-                        <LayoutDashboard size={18} /> Dashboard
+                        <LayoutDashboard size={18} /> {t('common.dashboard')}
+                      </Link>
+                      <Link 
+                        href="/dashboard/profile" 
+                        onClick={() => setShowDropdown(false)}
+                        style={{ 
+                          display: 'flex', alignItems: 'center', gap: '12px', padding: '12px',
+                          borderRadius: '10px', fontSize: '0.85rem', color: 'var(--text-secondary)',
+                          transition: 'var(--transition)'
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                      >
+                        <User size={18} /> {t('common.profile')}
                       </Link>
                       <Link 
                         href="/dashboard/wealth" 
@@ -146,7 +165,20 @@ export default function Navbar() {
                         onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
                         onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                       >
-                        <TrendingUp size={18} /> Portfolio
+                        <TrendingUp size={18} /> {t('common.portfolio')}
+                      </Link>
+                      <Link 
+                        href="/dashboard/settings" 
+                        onClick={() => setShowDropdown(false)}
+                        style={{ 
+                          display: 'flex', alignItems: 'center', gap: '12px', padding: '12px',
+                          borderRadius: '10px', fontSize: '0.85rem', color: 'var(--text-secondary)',
+                          transition: 'var(--transition)'
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                      >
+                        <Settings size={18} /> {t('common.settings')}
                       </Link>
                       <div style={{ height: '1px', background: 'var(--border-subtle)', margin: '4px 8px' }} />
                       <button 
@@ -160,7 +192,7 @@ export default function Navbar() {
                         onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.05)'}
                         onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                       >
-                        <LogOut size={18} /> Log Out
+                        <LogOut size={18} /> {t('common.logout')}
                       </button>
                     </motion.div>
                   )}
@@ -168,8 +200,8 @@ export default function Navbar() {
               </div>
             ) : (
               <>
-                <Link href="/login" className="btn-secondary" style={{ padding: '10px 24px', fontSize: '0.85rem' }}>Login</Link>
-                <Link href="/register" className="btn-primary" style={{ padding: '10px 24px', fontSize: '0.85rem' }}>Get Started</Link>
+                <Link href="/login" className="btn-secondary" style={{ padding: '10px 24px', fontSize: '0.85rem' }}>{t('common.login')}</Link>
+                <Link href="/register" className="btn-primary" style={{ padding: '10px 24px', fontSize: '0.85rem' }}>{t('common.register')}</Link>
               </>
             )}
           </div>

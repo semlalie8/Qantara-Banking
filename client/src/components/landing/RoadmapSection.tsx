@@ -2,43 +2,47 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 import SectionHeader from './SectionHeader';
-
-const phases = [
-  {
-    phase: 'Phase 1 — Months 0–6',
-    title: 'Proof of Concept',
-    description: 'Build MVP targeting one segment in Morocco. Pilot with early users, join Morocco Fintech Center for mentorship. Validate product-market fit.'
-  },
-  {
-    phase: 'Phase 2 — Months 6–18',
-    title: 'Scale Locally',
-    description: 'Incorporate legal entity. Secure payment license or bank partnership. Launch full product, build user base, seek seed funding.'
-  },
-  {
-    phase: 'Phase 3 — Years 2–3',
-    title: 'North Africa Expansion',
-    description: 'Enter Tunisia, Ivory Coast, Senegal. Adapt for Francophone markets. Regional partnerships and Series A funding.'
-  },
-  {
-    phase: 'Phase 4 — Years 3–4',
-    title: 'European Market',
-    description: 'EU entity in France or Malta. Target Moroccan diaspora. Comply with GDPR, PSD3, and AI Act. Visa Fast Track partnerships.'
-  },
-  {
-    phase: 'Phase 5 — Year 5+',
-    title: 'Global Scale',
-    description: 'North America, Middle East, and Asia. B2B API platform. Maintain Moroccan DNA with global technology and funding leverage.'
-  }
-];
+import { useLanguage } from '@/context/language.context';
 
 export default function RoadmapSection() {
+  const { t, locale } = useLanguage();
+  const isRTL = locale === 'ar';
+
+  const phases = [
+    {
+      phase: t('roadmap.phase1_label'),
+      title: t('roadmap.phase1_title'),
+      description: t('roadmap.phase1_desc')
+    },
+    {
+      phase: t('roadmap.phase2_label'),
+      title: t('roadmap.phase2_title'),
+      description: t('roadmap.phase2_desc')
+    },
+    {
+      phase: t('roadmap.phase3_label'),
+      title: t('roadmap.phase3_title'),
+      description: t('roadmap.phase3_desc')
+    },
+    {
+      phase: t('roadmap.phase4_label'),
+      title: t('roadmap.phase4_title'),
+      description: t('roadmap.phase4_desc')
+    },
+    {
+      phase: t('roadmap.phase5_label'),
+      title: t('roadmap.phase5_title'),
+      description: t('roadmap.phase5_desc')
+    }
+  ];
+
   return (
     <section id="roadmap" style={{ padding: '120px 0', background: 'var(--bg-secondary)' }}>
-      <div className="container">
+      <div className="container" style={{ direction: isRTL ? 'rtl' : 'ltr' }}>
         <SectionHeader 
-          label="Growth Roadmap"
-          title={<>From Morocco to the <span className="gradient-text">World</span></>}
-          subtitle="A phased strategy: prove locally, scale regionally, dominate globally."
+          label={t('roadmap.label')}
+          title={t('roadmap.title')}
+          subtitle={t('roadmap.subtitle')}
         />
 
         <div style={{ position: 'relative', maxWidth: '900px', margin: '0 auto', padding: '40px 0' }}>
@@ -51,17 +55,18 @@ export default function RoadmapSection() {
           {phases.map((phase, i) => (
             <motion.div
               key={phase.title}
-              initial={{ opacity: 0, x: i % 2 === 0 ? -50 : 50 }}
+              initial={{ opacity: 0, x: i % 2 === 0 ? (isRTL ? 50 : -50) : (isRTL ? -50 : 50) }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: i * 0.1 }}
               style={{ 
-                display: 'flex', justifyContent: i % 2 === 0 ? 'flex-end' : 'flex-start',
+                display: 'flex', 
+                justifyContent: i % 2 === 0 ? (isRTL ? 'flex-start' : 'flex-end') : (isRTL ? 'flex-end' : 'flex-start'),
                 width: '100%', marginBottom: '60px', position: 'relative' 
               }}
             >
               <div style={{ 
-                width: '45%', textAlign: i % 2 === 0 ? 'right' : 'left',
+                width: '45%', textAlign: i % 2 === 0 ? (isRTL ? 'left' : 'right') : (isRTL ? 'right' : 'left'),
                 padding: '30px', borderRadius: '20px', background: 'var(--bg-primary)',
                 border: '1px solid var(--border-subtle)', boxShadow: 'var(--shadow-card)'
               }}>

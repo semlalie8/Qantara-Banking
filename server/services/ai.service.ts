@@ -13,11 +13,14 @@ const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL || 'http://localhost:11434';
  * - gemma4:E2B (Quick Tasks)
  */
 class AIService {
-  static async generateResponse(prompt: string, model: string = 'qwen3.5:9b'): Promise<string> {
+  static async generateResponse(prompt: string, model: string = 'qwen3.5:9b', language: string = 'en'): Promise<string> {
     try {
+      const systemInstruction = `You are Qantara AI, a premium financial advisor. Please respond in ${language === 'ar' ? 'Arabic' : language === 'fr' ? 'French' : 'English'}.`;
+      const fullPrompt = `${systemInstruction}\n\n${prompt}`;
+      
       const response = await axios.post(`${OLLAMA_BASE_URL}/api/generate`, {
         model: model,
-        prompt: prompt,
+        prompt: fullPrompt,
         stream: false
       });
       return response.data.response;

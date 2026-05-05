@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 import Logo from '../Logo';
+import { useLanguage } from '@/context/language.context';
 
 const FacebookIcon = ({ size = 20 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -32,18 +33,27 @@ const LinkedinIcon = ({ size = 20 }: { size?: number }) => (
 );
 
 export default function Footer() {
+  const { t, locale } = useLanguage();
+  const isRTL = locale === 'ar';
+
   return (
     <footer style={{ padding: '100px 0 60px', borderTop: '1px solid var(--border-subtle)', background: 'var(--bg-secondary)' }}>
       <div className="container">
-        <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr 1fr', gap: '60px', marginBottom: '80px' }}>
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: '1.5fr 1fr 1fr 1fr', 
+          gap: '60px', 
+          marginBottom: '80px',
+          textAlign: isRTL ? 'right' : 'left'
+        }}>
           <div>
-          <Link href="/">
-            <Logo size={40} />
-          </Link>
+            <Link href="/">
+              <Logo size={40} />
+            </Link>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginTop: '24px', lineHeight: '1.7', maxWidth: '300px' }}>
-              Building the financial infrastructure that Morocco — and the world — deserves. From Morocco to the World.
+              {t('footer.tagline')}
             </p>
-            <div style={{ display: 'flex', gap: '16px', marginTop: '24px' }}>
+            <div style={{ display: 'flex', gap: '16px', marginTop: '24px', justifyContent: isRTL ? 'flex-start' : 'flex-start' }}>
               <Link href="#" style={{ color: 'var(--text-muted)', transition: 'var(--transition)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-blue)'} onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}><FacebookIcon size={20} /></Link>
               <Link href="#" style={{ color: 'var(--text-muted)', transition: 'var(--transition)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-teal)'} onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}><InstagramIcon size={20} /></Link>
               <Link href="#" style={{ color: 'var(--text-muted)', transition: 'var(--transition)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-primary)'} onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}><XIcon size={20} /></Link>
@@ -51,40 +61,41 @@ export default function Footer() {
             </div>
           </div>
           <div>
-            <h4 style={{ marginBottom: '24px', fontSize: '1.1rem' }}>Platform</h4>
-            <ul style={{ listStyle: 'none', color: 'var(--text-secondary)', fontSize: '0.9rem', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <li><Link href="#services">Digital Payments</Link></li>
-              <li><Link href="#services">Smart Lending</Link></li>
-              <li><Link href="#services">Wealth Management</Link></li>
-              <li><Link href="#verticals">All Verticals</Link></li>
+            <h4 style={{ marginBottom: '24px', fontSize: '1.1rem' }}>{t('footer.platform')}</h4>
+            <ul style={{ listStyle: 'none', color: 'var(--text-secondary)', fontSize: '0.9rem', display: 'flex', flexDirection: 'column', gap: '12px', padding: 0 }}>
+              <li><Link href="#services">{t('services.service1_title')}</Link></li>
+              <li><Link href="#services">{t('services.service2_title')}</Link></li>
+              <li><Link href="#services">{t('services.service3_title')}</Link></li>
+              <li><Link href="#verticals">{t('nav.verticals')}</Link></li>
             </ul>
           </div>
           <div>
-            <h4 style={{ marginBottom: '24px', fontSize: '1.1rem' }}>Company</h4>
-            <ul style={{ listStyle: 'none', color: 'var(--text-secondary)', fontSize: '0.9rem', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <li><Link href="#opportunity">About Us</Link></li>
-              <li><Link href="#roadmap">Roadmap</Link></li>
-              <li><Link href="#stats">Market Data</Link></li>
-              <li><Link href="#cta">Waitlist</Link></li>
+            <h4 style={{ marginBottom: '24px', fontSize: '1.1rem' }}>{t('footer.company')}</h4>
+            <ul style={{ listStyle: 'none', color: 'var(--text-secondary)', fontSize: '0.9rem', display: 'flex', flexDirection: 'column', gap: '12px', padding: 0 }}>
+              <li><Link href="#opportunity">{t('nav.opportunity')}</Link></li>
+              <li><Link href="#roadmap">{t('nav.roadmap')}</Link></li>
+              <li><Link href="#stats">{t('nav.market')}</Link></li>
+              <li><Link href="#cta">{t('hero.cta_join')}</Link></li>
             </ul>
           </div>
           <div>
-            <h4 style={{ marginBottom: '24px', fontSize: '1.1rem' }}>Legal</h4>
-            <ul style={{ listStyle: 'none', color: 'var(--text-secondary)', fontSize: '0.9rem', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <li><Link href="#">Privacy Policy</Link></li>
-              <li><Link href="#">Terms of Service</Link></li>
-              <li><Link href="#">CNDP Compliance</Link></li>
-              <li><Link href="#">GDPR Notice</Link></li>
+            <h4 style={{ marginBottom: '24px', fontSize: '1.1rem' }}>{t('footer.legal')}</h4>
+            <ul style={{ listStyle: 'none', color: 'var(--text-secondary)', fontSize: '0.9rem', display: 'flex', flexDirection: 'column', gap: '12px', padding: 0 }}>
+              <li><Link href="#">{t('footer.privacy')}</Link></li>
+              <li><Link href="#">{t('footer.terms')}</Link></li>
+              <li><Link href="#">{t('footer.cndp')}</Link></li>
+              <li><Link href="#">{t('footer.gdpr')}</Link></li>
             </ul>
           </div>
         </div>
         <div style={{ 
           display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
           paddingTop: '40px', borderTop: '1px solid rgba(148, 163, 184, 0.05)',
-          color: 'var(--text-muted)', fontSize: '0.85rem' 
+          color: 'var(--text-muted)', fontSize: '0.85rem',
+          flexDirection: isRTL ? 'row-reverse' : 'row'
         }}>
-          <span>&copy; 2025 Qantara. All rights reserved. Made in Morocco 🇲🇦</span>
-          <span>Backed by Morocco Fintech Center</span>
+          <span>&copy; 2025 Qantara. {t('footer.rights')} 🇲🇦</span>
+          <span>{t('footer.backed_by')}</span>
         </div>
       </div>
     </footer>

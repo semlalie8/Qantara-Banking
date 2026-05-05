@@ -21,6 +21,8 @@ import {
   User,
   LucideIcon
 } from 'lucide-react';
+import LanguageSwitcher from '../../components/LanguageSwitcher';
+import { useLanguage } from '../../context/language.context';
 
 interface NavItem {
   name: string;
@@ -29,23 +31,26 @@ interface NavItem {
   adminOnly?: boolean;
 }
 
-const navItems: NavItem[] = [
-  { name: 'Overview', icon: LayoutDashboard, href: '/dashboard' },
-  { name: 'Payments', icon: CreditCard, href: '/dashboard/payments' },
-  { name: 'Lending', icon: HandCoins, href: '/dashboard/lending' },
-  { name: 'Wealth', icon: TrendingUp, href: '/dashboard/wealth' },
-  { name: 'AI Advisor', icon: MessageSquare, href: '/dashboard/ai-advisor' },
-  { name: 'Analytics', icon: BarChart3, href: '/dashboard/analytics' },
-  { name: 'Admin Panel', icon: ShieldCheck, href: '/dashboard/admin', adminOnly: true },
-  { name: 'Support Inbox', icon: MessageSquare, href: '/dashboard/admin/inbox', adminOnly: true },
-  { name: 'Settings', icon: Settings, href: '/dashboard/settings' },
-];
+
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const { user, loading, logout } = useAuth();
+  const { t, locale } = useLanguage();
   const router = useRouter();
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const navItems: NavItem[] = [
+    { name: t('common.dashboard'), icon: LayoutDashboard, href: '/dashboard' },
+    { name: t('dashboard.payments'), icon: CreditCard, href: '/dashboard/payments' },
+    { name: t('dashboard.lending'), icon: HandCoins, href: '/dashboard/lending' },
+    { name: t('dashboard.wealth'), icon: TrendingUp, href: '/dashboard/wealth' },
+    { name: t('common.ai_advisor'), icon: MessageSquare, href: '/dashboard/ai-advisor' },
+    { name: t('dashboard.analytics'), icon: BarChart3, href: '/dashboard/analytics' },
+    { name: t('common.admin_panel'), icon: ShieldCheck, href: '/dashboard/admin', adminOnly: true },
+    { name: t('common.inbox'), icon: MessageSquare, href: '/dashboard/admin/inbox', adminOnly: true },
+    { name: t('common.settings'), icon: Settings, href: '/dashboard/settings' },
+  ];
 
   useEffect(() => {
     if (!loading && !user) {
@@ -135,7 +140,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           onMouseOut={(e) => e.currentTarget.style.background = 'transparent'}
           >
             <LogOut size={18} />
-            Sign Out
+            {t('common.logout')}
           </button>
         </div>
       </aside>
@@ -161,7 +166,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
             <input 
               type="text" 
-              placeholder="Search anything..." 
+              placeholder={t('dashboard.search_placeholder')} 
               style={{ 
                 width: '100%', 
                 padding: '10px 12px 10px 40px', 
@@ -176,6 +181,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
           {/* User Actions */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+            <LanguageSwitcher />
             <button style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', position: 'relative' }}>
               <Bell size={20} />
               <span style={{ position: 'absolute', top: '-2px', right: '-2px', width: '8px', height: '8px', background: 'var(--accent-blue)', borderRadius: '50%', border: '2px solid var(--bg-primary)' }}></span>
@@ -206,7 +212,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                   overflow: 'hidden',
                   border: user.role === 'ADMIN' ? '1.5px solid var(--accent-blue)' : 'none'
                 }}>
-                  <img src="/avatar.png" alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img src="/avatar.png" alt={t('common.avatar')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
                 <span style={{ fontSize: '0.85rem', fontWeight: '600', color: 'var(--text-primary)' }}>{user.firstName}</span>
                 <ChevronDown size={16} color="var(--text-muted)" style={{ transform: showDropdown ? 'rotate(180deg)' : 'none', transition: '0.3s' }} />
@@ -248,7 +254,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                       onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = 'var(--text-primary)'; }}
                       onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text-secondary)'; }}
                     >
-                      <User size={18} /> My Profile
+                      <User size={18} /> {t('dashboard.profile')}
                     </Link>
 
                     {user.role === 'ADMIN' && (
@@ -263,7 +269,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                         onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(37, 99, 235, 0.05)'; }}
                         onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
                       >
-                        <ShieldCheck size={18} /> Admin Panel
+                        <ShieldCheck size={18} /> {t('common.admin_panel')}
                       </Link>
                     )}
 
@@ -278,7 +284,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                       onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = 'var(--text-primary)'; }}
                       onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text-secondary)'; }}
                     >
-                      <Settings size={18} /> Settings
+                      <Settings size={18} /> {t('common.settings')}
                     </Link>
 
                     <button 
@@ -291,7 +297,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                       onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.05)'; }}
                       onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
                     >
-                      <LogOut size={18} /> Sign Out
+                      <LogOut size={18} /> {t('dashboard.sign_out')}
                     </button>
                   </motion.div>
                 )}
